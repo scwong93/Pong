@@ -19,7 +19,6 @@ var Paddle = function(x, y) {
   this.y = y;
   this.width = 10;
   this.height = 100;
-  this.speed = 10;
 };
 
 Paddle.prototype.render = function() {
@@ -51,6 +50,9 @@ var Ball = function(x, y) {
   this.startingAngle = 0 * Math.PI;
   this.endingAngle = 2 * Math.PI;
   this.counterClockwise = false;
+  this.speed = 5;
+  this.angleX = 5;
+  this.angleY = Math.floor((Math.random() * 10) + 1);
 };
 
 Ball.prototype.render = function() {
@@ -63,6 +65,28 @@ Ball.prototype.render = function() {
   context.stroke();
 };
 
+Ball.prototype.move = function() {
+  this.x += this.angleX;
+  this.y += this.angleY;
+
+  var ballTop = this.y - 10;
+  var ballBottom = this.y + 10;
+  var ballLeft = this.x - 10;
+  var ballRight = this.x + 10;
+
+  if (ballTop < 0 || ballBottom > canvas.height) {
+    this.angleY *= -1;
+  }
+
+  if (ballRight > 1385 && ballBottom >= player.y && ballTop <= (player.y + 100)) {
+    this.angleX *= -1
+  }
+
+  if (ballLeft < 15 && ballBottom >= computer.y && ballTop <= (computer.y + 100)) {
+    this.angleX *= -1
+  }
+};
+
 var ball = new Ball(700,350);
 
 var animate = window.requestAnimationFrame ||
@@ -73,6 +97,7 @@ var render = function() {
   player.render();
   computer.render();
   ball.render();
+  ball.move();
 };
 
 var step = function() {
@@ -83,9 +108,9 @@ var step = function() {
 
 window.addEventListener('keydown', function(event) {
   if (event.keyCode == 40) {
-    player.move(10);
+    player.move(30);
   } else if (event.keyCode == 38) {
-    player.move(-10);
+    player.move(-30);
   }
 });
 
