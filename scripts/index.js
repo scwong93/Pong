@@ -42,6 +42,14 @@ var player = new Paddle(1385, 300);
 
 var computer = new Paddle(5,300);
 
+computer.update = function() {
+  if (ball.y + 20 > this.y) {
+    this.move(5);
+  } else if (ball.y - 20 < this.y) {
+    this.move(-5);
+  }
+};
+
 // Ball constructor and methods
 var Ball = function(x, y) {
   this.x = x;
@@ -50,9 +58,8 @@ var Ball = function(x, y) {
   this.startingAngle = 0 * Math.PI;
   this.endingAngle = 2 * Math.PI;
   this.counterClockwise = false;
-  this.speed = 5;
-  this.angleX = 5;
-  this.angleY = Math.floor((Math.random() * 10) + 1);
+  this.angleX = Math.floor((Math.random() * 5) + 3);
+  this.angleY = Math.floor((Math.random() * 5) + 3);
 };
 
 Ball.prototype.render = function() {
@@ -65,7 +72,7 @@ Ball.prototype.render = function() {
   context.stroke();
 };
 
-Ball.prototype.move = function() {
+Ball.prototype.update = function() {
   this.x += this.angleX;
   this.y += this.angleY;
 
@@ -78,14 +85,30 @@ Ball.prototype.move = function() {
     this.angleY *= -1;
   }
 
-  if (ballRight > 1385 && ballBottom >= player.y && ballTop <= (player.y + 100)) {
-    this.angleX *= -1
+  if (ballRight >= 1385 && ballBottom >= player.y && ballTop <= (player.y + 100)) {
+    this.angleX *= -1;
   }
 
-  if (ballLeft < 15 && ballBottom >= computer.y && ballTop <= (computer.y + 100)) {
-    this.angleX *= -1
+  if (ballLeft <= 15 && ballBottom >= computer.y && ballTop <= (computer.y + 100)) {
+    this.angleX *= -1;
+  }
+
+  if (ballRight > 1400) {
+    ball.x = 1350;
+    ball.y = 350;
+    this.angleX = -(Math.floor((Math.random() * 10) + 3));
+    this.angleY = -(Math.floor((Math.random() * 10) + 3));
+  }
+
+  if (ballLeft < 0) {
+    ball.x = 100;
+    ball.y = 350;
+    this.angleX = -(Math.floor((Math.random() * 10) + 3));
+    this.angleY = -(Math.floor((Math.random() * 10) + 3));
   }
 };
+
+
 
 var ball = new Ball(700,350);
 
@@ -97,12 +120,17 @@ var render = function() {
   player.render();
   computer.render();
   ball.render();
-  ball.move();
+};
+
+var update = function() {
+  ball.update();
+  computer.update();
 };
 
 var step = function() {
   context.clearRect(0, 0, canvas.width, canvas.height);
   render();
+  update();
   animate(step);
 };
 
