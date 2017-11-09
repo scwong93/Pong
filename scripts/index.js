@@ -72,6 +72,7 @@ Ball.prototype.render = function() {
   context.stroke();
 };
 
+var gamePlaying = true;
 var playerScore = 0;
 var computerScore = 0;
 
@@ -102,7 +103,7 @@ Ball.prototype.update = function() {
   if (ballRight > 1400) {
     computerScore++;
     document.getElementById('computer-score').innerHTML = computerScore;
-    if (computerScore == 11) {
+    if (computerScore == 1) {
       gameOver('computer');
     }
     ball.x = 1350;
@@ -114,7 +115,7 @@ Ball.prototype.update = function() {
   if (ballLeft < 0) {
     playerScore++;
     document.getElementById('player-score').innerHTML = playerScore;
-    if (playerScore == 11) {
+    if (playerScore == 1) {
       gameOver('player');
     }
     ball.x = 100;
@@ -130,6 +131,7 @@ var gameOver = function(string) {
   } else if (string == 'player') {
     document.getElementById('win-lose').innerHTML = "You Won! Refresh to play again.";
   }
+  gamePlaying = false;
 };
 
 var ball = new Ball(700,350);
@@ -153,7 +155,9 @@ var step = function() {
   context.clearRect(0, 0, canvas.width, canvas.height);
   render();
   update();
-  animate(step);
+  if(gamePlaying) {
+    animate(step);
+  }
 };
 
 window.addEventListener('keydown', function(event) {
