@@ -72,6 +72,12 @@ Ball.prototype.render = function() {
   context.stroke();
 };
 
+var playerScore = 0;
+var computerScore = 0;
+
+document.getElementById('computer-score').innerHTML = 0;
+document.getElementById('player-score').innerHTML = 0;
+
 Ball.prototype.update = function() {
   this.x += this.angleX;
   this.y += this.angleY;
@@ -94,6 +100,8 @@ Ball.prototype.update = function() {
   }
 
   if (ballRight > 1400) {
+    computerScore++;
+    document.getElementById('computer-score').innerHTML = computerScore;
     ball.x = 1350;
     ball.y = 350;
     this.angleX = -(Math.floor((Math.random() * 10) + 3));
@@ -101,14 +109,14 @@ Ball.prototype.update = function() {
   }
 
   if (ballLeft < 0) {
+    playerScore++;
+    document.getElementById('player-score').innerHTML = computerScore;
     ball.x = 100;
     ball.y = 350;
-    this.angleX = -(Math.floor((Math.random() * 10) + 3));
-    this.angleY = -(Math.floor((Math.random() * 10) + 3));
+    this.angleX = Math.floor((Math.random() * 10) + 3);
+    this.angleY = Math.floor((Math.random() * 10) + 3);
   }
 };
-
-
 
 var ball = new Ball(700,350);
 
@@ -141,12 +149,6 @@ window.addEventListener('keydown', function(event) {
     player.move(-30);
   }
 });
-
-window.addEventListener('keyup', function(event) {
-  // do I need this logic?
-});
-
-
 
 window.onload = function() {
   step();
