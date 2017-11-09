@@ -1,8 +1,16 @@
 canvas {
   border: solid;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 0;
+  padding-right: 0;
+  display: block;
 }
 
 .score-table {
   width: 100%;
+  text-align: center;
+}
+.message {
   text-align: center;
 }

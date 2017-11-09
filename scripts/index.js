@@ -102,6 +102,9 @@ Ball.prototype.update = function() {
   if (ballRight > 1400) {
     computerScore++;
     document.getElementById('computer-score').innerHTML = computerScore;
+    if (computerScore == 11) {
+      gameOver('computer');
+    }
     ball.x = 1350;
     ball.y = 350;
     this.angleX = -(Math.floor((Math.random() * 10) + 3));
@@ -110,11 +113,22 @@ Ball.prototype.update = function() {
 
   if (ballLeft < 0) {
     playerScore++;
-    document.getElementById('player-score').innerHTML = computerScore;
+    document.getElementById('player-score').innerHTML = playerScore;
+    if (playerScore == 11) {
+      gameOver('player');
+    }
     ball.x = 100;
     ball.y = 350;
     this.angleX = Math.floor((Math.random() * 10) + 3);
     this.angleY = Math.floor((Math.random() * 10) + 3);
+  }
+};
+
+var gameOver = function(string) {
+  if (string == 'computer') {
+    document.getElementById('win-lose').innerHTML = "You Lost! Refresh to try again.";
+  } else if (string == 'player') {
+    document.getElementById('win-lose').innerHTML = "You Won! Refresh to play again.";
   }
 };
 
